@@ -19,8 +19,8 @@ public class BitcoinRateApplication {
     public CommandLineRunner run(BitcoinRateService bitcoinRateService) {
         return args -> {
             System.out.println("Type from which currency you want to get bitcoin rate:");
-            Scanner scanner = new Scanner(System.in);
-            String currency = scanner.nextLine().trim();
+            var scanner = new Scanner(System.in);
+            var currency = scanner.nextLine().trim();
             System.out.println(bitcoinRateService.getBitcoinRateDetails(currency));
         };
     }

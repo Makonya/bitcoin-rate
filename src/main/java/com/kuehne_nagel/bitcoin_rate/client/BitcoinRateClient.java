@@ -11,6 +11,7 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDate;
+
 import static com.kuehne_nagel.bitcoin_rate.enums.ErrorCode.ERROR_CURRENCY_NOT_CORRECT;
 import static com.kuehne_nagel.bitcoin_rate.enums.ErrorCode.ERROR_FETCHING_DATA_FROM_API;
 
@@ -30,7 +31,7 @@ public class BitcoinRateClient {
 
     public CurrentRateResponseDto getCurrentBitcoinRate(String exchangeCurrency) throws DefiningCurrencyException {
         CurrentRateResponseDto responseDto;
-        String url = bitcoinRateUrl.concat("/v1/bpi/currentprice/").concat(exchangeCurrency);
+        var url = bitcoinRateUrl.concat("/v1/bpi/currentprice/").concat(exchangeCurrency);
         log.info("Sending REST request to {}", url);
         try {
             responseDto = restTemplate.getForObject(url, CurrentRateResponseDto.class);
@@ -40,7 +41,7 @@ public class BitcoinRateClient {
         } catch (HttpClientErrorException e) {
             log.error("HttpClientErrorException", e);
             throw new DefiningCurrencyException(ERROR_CURRENCY_NOT_CORRECT);
-        } catch (Exception e){
+        } catch (Exception e) {
             log.error("ERROR", e);
             throw new DefiningCurrencyException(ERROR_FETCHING_DATA_FROM_API);
         }
@@ -49,7 +50,7 @@ public class BitcoinRateClient {
 
     public RateHistoryResponseDto getBitcoinRateHistory(String exchangeCurrency, LocalDate from, LocalDate to) throws DefiningCurrencyException {
         RateHistoryResponseDto responseDto;
-        String url = String.format("%s/v1/bpi/historical/close.json?start=%s&end=%s&currency=%s",
+        var url = String.format("%s/v1/bpi/historical/close.json?start=%s&end=%s&currency=%s",
                 bitcoinRateUrl, from, to, exchangeCurrency);
         log.info("Sending REST request to {}", url);
         try {
@@ -60,7 +61,7 @@ public class BitcoinRateClient {
         } catch (HttpClientErrorException e) {
             log.error("ERROR", e);
             throw new DefiningCurrencyException(ERROR_CURRENCY_NOT_CORRECT);
-        } catch (Exception e){
+        } catch (Exception e) {
             log.error("ERROR", e);
             throw new DefiningCurrencyException(ERROR_FETCHING_DATA_FROM_API);
         }
